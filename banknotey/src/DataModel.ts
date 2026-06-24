@@ -6,5 +6,5 @@ type BankNote = {
 
 type User = {
     name: string
-    collection: BankNote[];ß
+    collection: BankNote[];
 }
