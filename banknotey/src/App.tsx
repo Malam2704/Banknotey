@@ -1,10 +1,12 @@
-import { useRef} from 'react'
+import { useRef, useState} from 'react'
 import './App.css'
 
 function App() {
+  const [messageCount, setMessageCount] = useState(0);
   const currMessage = useRef<HTMLInputElement>(null);
 
   const alertMessage = (textMessage: string | undefined) => {
+    setMessageCount(messageCount + 1);
     alert(textMessage)
   }
   return (
