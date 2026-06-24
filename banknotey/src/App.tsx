@@ -12,6 +12,7 @@ function App() {
   return (
     <div className="App">
       <h1>Vite + React</h1>
+      <h2>Total Messages Alerted: {messageCount}</h2>
       <input type="text" ref={currMessage}/>
       <button onClick={() => alertMessage(currMessage.current?.value)}>Click to Alert your message</button>
     </div>
