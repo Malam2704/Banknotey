@@ -1,40 +1,50 @@
-import { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import './App.css'
 import currencyData from './assets/CountryCurrency.json';
+import type { BankNote } from './DataModel';
+
+type CurrencyCode = keyof typeof currencyData;
 
 function App() {
-  const [messageCount, setMessageCount] = useState(0);
-  const currMessage = useRef<HTMLInputElement>(null);
-  const [selectedCurrency, setSelectedCurrency] = useState<string>('');
+  const [selectedCurrency, setSelectedCurrency] = useState<CurrencyCode>("USD");
+  const [selectedCurrencyAmount, setSelectedAmount] = useState<string>("");
+  const [storedBankNotes, setStoredBankNotes] = useState<BankNote[]>([]);
 
-  const handleCurrencyChange = (event) => {
-    setSelectedCurrency(event.target.value)
+  const handleCurrencyChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCurrency(event.target.value as CurrencyCode);
   }
-  const alertMessage = (textMessage: string | undefined) => {
-    setMessageCount(messageCount + 1);
-    alert(textMessage)
+  const handleAmountChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedAmount(event.target.value);
   }
+  const addNewBankNote = () => {
+    const newBankNote: BankNote = {
+      amount: selectedCurrencyAmount,
+      currency: selectedCurrency,
+    }
+    setStoredBankNotes([...storedBankNotes, newBankNote]);
+  }
+
   return (
     <div className="App">
       <h1>My Bank Notes</h1>
       <h2>Add your bank notes here</h2>
       <label>Currency</label>
-      <select name="selectedCountry" onChange={handleCurrencyChange}>
+      <select onChange={handleCurrencyChange}>
         {Object.keys(currencyData).map((currency: string) =>
           <option value={currency} key={currency}>{currency}</option>)}
       </select>
       <label>Number Value</label>
-      <select name="selectedCountry">
-        {currencyData[selectedCurrency].map((currency: string) =>
-          <option value={currency} key={currency}>{currency}</option>)}
-      </select>
-      <label>Country</label>
-      <select name="selectedCountry">
-        {Object.keys(currencyData).map((currency: string) =>
-          <option value={currency} key={currency}>{currency}</option>)}
+      <select onChange={handleAmountChange}>
+        {currencyData[selectedCurrency].map((numericValue: string) =>
+          <option value={numericValue} key={numericValue}>{numericValue}</option>)}
       </select>
 
-      <button onClick={() => alertMessage(currMessage.current?.value)}>Click to Alert your message</button>
+      <button onClick={addNewBankNote}>Add Banknote</button>
+
+      <ol>
+        {storedBankNotes.map((bankNote: BankNote) =>
+          <li>{bankNote.amount} {bankNote.currency}</li>)}
+      </ol>
     </div >
   )
 }

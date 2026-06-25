@@ -1,10 +1,13 @@
-type BankNote = {
-    value: number;
-    country: string;
-    symbol: string;
+import currencyData from './assets/CountryCurrency.json';
+
+type CurrencyCode = keyof typeof currencyData;
+
+export type BankNote = {
+    currency: CurrencyCode
+    amount: string
 }
 
-type User = {
+export type User = {
     name: string
     collection: BankNote[];
 }
